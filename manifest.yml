@@ -5,13 +5,10 @@
 #  Step 2 - After you have your application running you can bind to the services below as described on predix.io
 
 applications:
-  - name:
-      Predix-httpOauth-WebApp-OauthTest # Step 1: Change your application
-  name
+  - name: Predix-http-WebApp-OauthTest
     buildpack: go_buildpack
-    #path: dist
     memory: 64M
-    stack: cfcdlinuxfs2
+    command: gooauth
 
     # Step 2: Bind services and configure environment variables as described on predix.io
     #services:

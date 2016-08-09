@@ -2,8 +2,6 @@ package main
 
 import (
 	"bytes"
-	"crypto/tls"
-	"crypto/x509"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -12,8 +10,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/gorilla/mux"
 	"github.com/satori/go.uuid"
+
+	"github.com/gorilla/mux"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -165,11 +164,11 @@ func StartSever() {
 			os.Exit(2)
 		}*/
 
-	path, _, _ := readConfig()
+	//path, _, _ := readConfig()
 
 	//Assign cert&key absolute paths to variables
-	var cert = path + "\\cert.pem"
-	var sslkey = path + "\\key.pem"
+	//var cert = path + "\\cert.pem"
+	//var sslkey = path + "\\key.pem"
 
 	//Create new gorilla mux router and define route handler based on the url path defined.
 	r := mux.NewRouter()
@@ -177,22 +176,23 @@ func StartSever() {
 	r.HandleFunc("/auth", AuthenticateClient).Methods("GET")
 
 	//Create new CertPool instance and append PEM cert
-	roots := x509.NewCertPool()
-	roots.AppendCertsFromPEM([]byte(cert))
-	tlsConf := &tls.Config{
+	//roots := x509.NewCertPool()
+	//roots.AppendCertsFromPEM([]byte(cert))
+	/*tlsConf := &tls.Config{
 		RootCAs:            roots,
 		InsecureSkipVerify: true,
-	}
+	}*/
 
 	//Configure http server struct
 	server := http.Server{
-		Addr:      ":443",
-		Handler:   r,
-		TLSConfig: tlsConf,
+		Addr:    ":8080",
+		Handler: r,
+		//TLSConfig: tlsConf,
 	}
 
 	log.Printf("Server Listening on port %s", server.Addr)
-	err := server.ListenAndServeTLS(cert, sslkey)
+	//err := server.ListenAndServeTLS(cert, sslkey)
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
